@@ -45,6 +45,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
@@ -56,12 +57,15 @@ public class MyTextWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        LOGGER.info("Session is established and connected: {}", session.toString());
         sessions.add(session);
         super.afterConnectionEstablished(session);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+
+        LOGGER.info("Session is closed: {}", session.toString());
         sessions.remove(session);
         super.afterConnectionClosed(session, status);
     }
@@ -71,6 +75,8 @@ public class MyTextWebSocketHandler extends TextWebSocketHandler {
         super.handleTextMessage(session, message);
         sessions.forEach(webSocketSession -> {
             try {
+
+                LOGGER.info("Message of session: {} and message {}", session.toString(), message);
                 webSocketSession.sendMessage(message);
             } catch (IOException e) {
                 LOGGER.error("Error occurred.", e);
