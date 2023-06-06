@@ -62,7 +62,9 @@ public class WebSocketMessageBrokerConfig implements WebSocketMessageBrokerConfi
     public void registerStompEndpoints(StompEndpointRegistry registry) {
        registry.addEndpoint("/broadcast");  // this is OK to leave it here
         // custom heartbeat, every 60 sec
-        registry.addEndpoint("/broadcast").withSockJS().setHeartbeatTime(60_000);
+        registry.addEndpoint("/broadcast").
+                //setHandshakeHandler(new ClientHandShakeHandler()).
+                withSockJS().setHeartbeatTime(60_000);
         registry.addEndpoint("/chat").withSockJS();
         registry.addEndpoint("/web-socket");
     }

@@ -36,17 +36,7 @@
  *   https://creativecommons.org/licenses/by-sa/4.0/
  *   https://creativecommons.org/licenses/by-sa/4.0/legalcode
  */
-package com.dariawan.websocket;
+package com.dariawan.websocket.config;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
-
-@SpringBootApplication
-@EnableScheduling
-public class WebSocketExampleApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(WebSocketExampleApplication.class, args);
-    }
+public class WebsocketInteerceptor {
 }

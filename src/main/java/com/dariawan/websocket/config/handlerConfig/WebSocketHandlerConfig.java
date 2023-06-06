@@ -36,17 +36,39 @@
  *   https://creativecommons.org/licenses/by-sa/4.0/
  *   https://creativecommons.org/licenses/by-sa/4.0/legalcode
  */
-package com.dariawan.websocket;
+package com.dariawan.websocket.config.handlerConfig;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 
-@SpringBootApplication
-@EnableScheduling
-public class WebSocketExampleApplication {
+import javax.websocket.Session;
 
-    public static void main(String[] args) {
-        SpringApplication.run(WebSocketExampleApplication.class, args);
+@Configuration
+public class WebSocketHandlerConfig<S extends Session> {
+
+    @Bean
+    public WebSocketConnectHandler<S> webSocketConnectHandler(SimpMessageSendingOperations messageSendingOperations) {
+        return new WebSocketConnectHandler<>(messageSendingOperations);
+    }
+
+    @Bean
+    public WebSocketConnectedHandler<S> webSocketConnectedHandler(SimpMessageSendingOperations messageSendingOperations) {
+        return new WebSocketConnectedHandler<>(messageSendingOperations);
+    }
+
+    @Bean
+    public WebSocketSubscribeEventHandler<S> webSocketSubscribeEventHandler(SimpMessageSendingOperations messageSendingOperations) {
+        return new WebSocketSubscribeEventHandler<>(messageSendingOperations);
+    }
+
+    @Bean
+    public WebSocketUnsubscribedEventHandler<S> webSocketUnSubscribeEventHandler(SimpMessageSendingOperations messageSendingOperations) {
+        return new WebSocketUnsubscribedEventHandler<>(messageSendingOperations);
+    }
+
+    @Bean
+    public WebSocketDisconnectHandler<S> webSocketDisconnectHandler(SimpMessageSendingOperations messageSendingOperations) {
+        return new WebSocketDisconnectHandler<>(messageSendingOperations);
     }
 }

@@ -36,17 +36,28 @@
  *   https://creativecommons.org/licenses/by-sa/4.0/
  *   https://creativecommons.org/licenses/by-sa/4.0/legalcode
  */
-package com.dariawan.websocket;
+package com.dariawan.websocket.model;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
-@SpringBootApplication
-@EnableScheduling
-public class WebSocketExampleApplication {
+@Component
+@RequiredArgsConstructor
+public class WebSocketSessionManager {
 
-    public static void main(String[] args) {
-        SpringApplication.run(WebSocketExampleApplication.class, args);
+    private static final String WEBSOCKET_SESSION_KEY = "session";
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    public void saveWebSocketSession(String sessionId, WebSocketSession session) {
+        redisTemplate.opsForHash().put(WEBSOCKET_SESSION_KEY, sessionId, session);
+    }
+
+    public void removeWebSocketSession(String sessionId) {
+        redisTemplate.opsForHash().delete(WEBSOCKET_SESSION_KEY, sessionId);
+    }
+
+    public WebSocketSession getWebSocketSession(String sessionId) {
+        return (WebSocketSession) redisTemplate.opsForHash().get(WEBSOCKET_SESSION_KEY, sessionId);
     }
 }

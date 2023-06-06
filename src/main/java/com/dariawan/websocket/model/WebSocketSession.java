@@ -36,17 +36,14 @@
  *   https://creativecommons.org/licenses/by-sa/4.0/
  *   https://creativecommons.org/licenses/by-sa/4.0/legalcode
  */
-package com.dariawan.websocket;
+package com.dariawan.websocket.model;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.data.redis.core.RedisHash;
 
-@SpringBootApplication
-@EnableScheduling
-public class WebSocketExampleApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(WebSocketExampleApplication.class, args);
-    }
+@RedisHash("web-socket-session")
+public class WebSocketSession {
+    private String id;
+    private String userName;
+    private String sessionId;
+    private Object session;
 }

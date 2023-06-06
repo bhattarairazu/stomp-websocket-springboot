@@ -47,8 +47,13 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserInterceptor implements ChannelInterceptor {
+    static final String API_KEY_HEADER = "authKey";
+    static final String SESSION_KEY_HEADER = "simpSessionId";
+    static final String WS_ID_HEADER = "ws-id";
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -71,4 +76,66 @@ public class UserInterceptor implements ChannelInterceptor {
         }
         return message;
     }
+
+    ///Second way for authentication user token.
+    //it can be used in webscoket with spring security
+    /**
+     * Processes a message before sending it
+     */
+//    @Override
+//    public Message<?> preSend(Message<?> message, MessageChannel channel) {
+//        final StompHeaderAccessor accessor = readHeaderAccessor(message);
+//
+//        if (accessor.getCommand() == StompCommand.CONNECT) {
+//
+//            String wsId = readWebSocketIdHeader(accessor);
+//            String apiKey = readAuthKeyHeader(accessor);
+//            String sessionId = readSessionId(accessor);
+//
+//            // authenticate the user and if that's successful add their user information to the headers.
+//            UsernamePasswordAuthenticationToken user = new UsernamePasswordAuthenticationToken(wsId, null);
+//            accessor.setUser(user);
+//            accessor.setHeader("connection-time", LocalDateTime.now().toString());
+//            log.info("User with authKey '{}', ws-id {} session {} make a WebSocket connection and generated the user {}", apiKey, wsId, sessionId, user.toString());
+//
+//        }
+//
+//        return message;
+//
+//    }
+
+    /**
+     * Instantiate an object for retrieving the STOMP headers
+     */
+//    private StompHeaderAccessor readHeaderAccessor(Message<?> message) {
+//        final StompHeaderAccessor accessor = getAccessor(message);
+//        if (accessor == null) {
+//            throw new AuthenticationCredentialsNotFoundException("Fail to read headers.");
+//        }
+//        return accessor;
+//    }
+//
+//    private String readSessionId(StompHeaderAccessor accessor) {
+//        return ofNullable(accessor.getMessageHeaders().get(SESSION_KEY_HEADER))
+//                .orElseThrow(() -> new AuthenticationCredentialsNotFoundException("Session header not found")).toString();
+//    }
+//
+//    private String readAuthKeyHeader(StompHeaderAccessor accessor) {
+//        final String authKey = accessor.getFirstNativeHeader(API_KEY_HEADER);
+//        if (authKey == null || authKey.trim().isEmpty())
+//            throw new AuthenticationCredentialsNotFoundException("Auth Key Not Found");
+//        return authKey;
+//    }
+//
+//    private String readWebSocketIdHeader(StompHeaderAccessor accessor) {
+//        final String wsId = accessor.getFirstNativeHeader(WS_ID_HEADER);
+//        if (wsId == null || wsId.trim().isEmpty())
+//            throw new AuthenticationCredentialsNotFoundException("Web Socket ID Header not found");
+//        return wsId;
+//    }
+//
+//    StompHeaderAccessor getAccessor(Message<?> message) {
+//        return MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+//    }
+
 }

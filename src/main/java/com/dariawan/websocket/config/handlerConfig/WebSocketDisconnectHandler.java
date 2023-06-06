@@ -36,17 +36,29 @@
  *   https://creativecommons.org/licenses/by-sa/4.0/
  *   https://creativecommons.org/licenses/by-sa/4.0/legalcode
  */
-package com.dariawan.websocket;
+package com.dariawan.websocket.config.handlerConfig;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import com.dariawan.websocket.model.WebSocketSessionManager;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-@SpringBootApplication
-@EnableScheduling
-public class WebSocketExampleApplication {
+import java.util.Optional;
 
-    public static void main(String[] args) {
-        SpringApplication.run(WebSocketExampleApplication.class, args);
+@Slf4j
+public class WebSocketDisconnectHandler<S> implements ApplicationListener<SessionDisconnectEvent> {
+    @Autowired
+    private WebSocketSessionManager webSocketSessionManager;
+    public WebSocketDisconnectHandler(SimpMessageSendingOperations messagingTemplate) {
+        super();
+    }
+    @Override
+    public void onApplicationEvent(SessionDisconnectEvent event) {
+        Optional.ofNullable(event.getUser()).ifPresent(user ->{
+                log.info("User {} disconnected from session id {}",user.getName(), event.getSessionId());
+            webSocketSessionManager.removeWebSocketSession(event.getSessionId());
+        });
     }
 }

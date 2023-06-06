@@ -36,17 +36,26 @@
  *   https://creativecommons.org/licenses/by-sa/4.0/
  *   https://creativecommons.org/licenses/by-sa/4.0/legalcode
  */
-package com.dariawan.websocket;
+package com.dariawan.websocket.config;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import com.sun.security.auth.UserPrincipal;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
-@SpringBootApplication
-@EnableScheduling
-public class WebSocketExampleApplication {
+import java.security.Principal;
+import java.util.Map;
+import java.util.UUID;
 
-    public static void main(String[] args) {
-        SpringApplication.run(WebSocketExampleApplication.class, args);
+@Slf4j
+public class ClientHandShakeHandler extends DefaultHandshakeHandler {
+
+    @Override
+    protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {
+        final String randId = UUID.randomUUID().toString();
+        log.info("Name is {}", attributes.get("name"));
+        log.info("User opened client unique ID: {}", randId);
+        return new UserPrincipal(randId);
     }
 }

@@ -36,17 +36,29 @@
  *   https://creativecommons.org/licenses/by-sa/4.0/
  *   https://creativecommons.org/licenses/by-sa/4.0/legalcode
  */
-package com.dariawan.websocket;
+package com.dariawan.websocket.config.handlerConfig;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationListener;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.support.GenericMessage;
+import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
 
-@SpringBootApplication
-@EnableScheduling
-public class WebSocketExampleApplication {
+import java.util.Optional;
 
-    public static void main(String[] args) {
-        SpringApplication.run(WebSocketExampleApplication.class, args);
+@Slf4j
+public class WebSocketUnsubscribedEventHandler<S> implements ApplicationListener<SessionUnsubscribeEvent> {
+    public WebSocketUnsubscribedEventHandler(SimpMessageSendingOperations messagingTemplate) {
+        super();
     }
+    @Override
+    public void onApplicationEvent(SessionUnsubscribeEvent event) {
+        Optional.ofNullable(event.getUser())
+                .ifPresent(user->{
+                    GenericMessage message = (GenericMessage) event.getMessage();
+                    String simpDestination = (String) message.getHeaders().get("simpDestination");
+                    log.info("User {} unsubscribed to : {}", user.getName(), simpDestination);
+                });
+    }
+
 }

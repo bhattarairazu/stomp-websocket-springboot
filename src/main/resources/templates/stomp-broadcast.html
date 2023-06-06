@@ -74,11 +74,77 @@
                         showBroadcastMessage(createTextNode(JSON.parse(output.body)));
                     });
                     
-                    sendConnection(' connected to server');                
+                    sendConnection(' connected to server broadcast');
                     setConnected(true);
                 }, function (err) {
                     alert('error' + err);
-                });                
+                });
+
+                stompClient.connect({}, function () {
+                    stompClient.subscribe('/topic/test1', function (output) {
+                        showBroadcastMessage(createTextNode(JSON.parse(output.body)));
+                    });
+
+                    sendConnection(' connected to server test1');
+                    setConnected(true);
+                }, function (err) {
+                    alert('error' + err);
+                });
+                stompClient.connect({}, function () {
+                    stompClient.subscribe('/topic/test2', function (output) {
+                        showBroadcastMessage(createTextNode(JSON.parse(output.body)));
+                    });
+
+                    sendConnection(' connected to server test2');
+                    setConnected(true);
+                }, function (err) {
+                    alert('error' + err);
+                });
+
+                stompClient.connect({}, function () {
+                    stompClient.subscribe('/topic/test3', function (output) {
+                        showBroadcastMessage(createTextNode(JSON.parse(output.body)));
+                    });
+
+                    sendConnection(' connected to server test3');
+                    setConnected(true);
+                }, function (err) {
+                    alert('error' + err);
+                });
+
+                stompClient.connect({}, function () {
+                    stompClient.subscribe('/topic/test4', function (output) {
+                        showBroadcastMessage(createTextNode(JSON.parse(output.body)));
+                    });
+
+                    sendConnection(' connected to server test4');
+                    setConnected(true);
+                }, function (err) {
+                    alert('error' + err);
+                });
+
+                stompClient.connect({}, function () {
+                    stompClient.subscribe('/topic/test5', function (output) {
+                        showBroadcastMessage(createTextNode(JSON.parse(output.body)));
+                    });
+
+                    sendConnection(' connected to server test5');
+                    setConnected(true);
+                }, function (err) {
+                    alert('error' + err);
+                });
+
+                stompClient.connect({}, function () {
+                    stompClient.subscribe('/topic/test6', function (output) {
+                        showBroadcastMessage(createTextNode(JSON.parse(output.body)));
+                    });
+
+                    sendConnection(' connected to server test6');
+                    setConnected(true);
+                }, function (err) {
+                    alert('error' + err);
+                });
+
             }
 
             function disconnect() {
